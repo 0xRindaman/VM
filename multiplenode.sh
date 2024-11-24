@@ -32,6 +32,8 @@ wget $CLIENT_URL -O multipleforlinux.tar
 echo "Extracting files..."
 tar -xvf multipleforlinux.tar
 
+cd multipleforlinux
+
 echo "Granting permissions..."
 chmod +x ./multiple-cli
 chmod +x ./multiple-node
@@ -46,7 +48,7 @@ chmod -R 777 $(pwd)
 echo "Launching multiple-node..."
 nohup ./multiple-node > output.log 2>&1 &
 
-echo "Please input your Account ID and PIN to bind your account:"
+echo "Please enter your Account ID and PIN to bind your account:"
 read -p "Account ID: " IDENTIFIER
 read -p "PIN: " PIN
 
