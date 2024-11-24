@@ -50,7 +50,7 @@ nohup ./multiple-node > output.log 2>&1 &
 
 echo "Please enter your Account ID and PIN to bind your account:"
 read -p "Account ID: " IDENTIFIER
-read -p "PIN: " PIN
+read -p "Set your PIN: " PIN
 
 echo "Binding account with ID: $IDENTIFIER and PIN: $PIN..."
 multiple-cli bind --bandwidth-download 100 --identifier $IDENTIFIER --pin $PIN --storage 200 --bandwidth-upload 100
