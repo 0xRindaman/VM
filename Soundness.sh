@@ -40,31 +40,13 @@ install_soundness() {
         exit 1
     fi
 
-    if [ $(id -u) -eq 0 ]; then
-        KEY_DIR="/root/.soundness/keys"
-    else
-        KEY_DIR="$HOME/.soundness/keys"
-    fi
-
-    echo "Checking for existing keypair 'my-key'..." | tee -a "$LOG_FILE"
+    echo "Generating new key pair..." | tee -a "$LOG_FILE"
     if command -v soundness-cli >/dev/null 2>&1; then
-        if soundness-cli list-keys | grep -q "my-key"; then
-            echo "Key 'my-key' already exists. Removing it..." | tee -a "$LOG_FILE"
-            mkdir -p "$KEY_DIR"
-            rm -f "$KEY_DIR/my-key.key" "$KEY_DIR/my-key.pub" 2>&1 | tee -a "$LOG_FILE"
-            find "$KEY_DIR" -name "my-key*" -exec rm -f {} \; 2>&1 | tee -a "$LOG_FILE"
-            echo "Existing key 'my-key' removed - $(date)" >> "$LOG_FILE"
-        else
-            echo "No existing 'my-key' found. Proceeding with new key generation..." | tee -a "$LOG_FILE"
-        fi
+        echo "defaultpass" | soundness-cli generate-key --name my-key 2>&1 | tee -a "$LOG_FILE"
     else
         echo "Error: soundness-cli not found" | tee -a "$LOG_FILE"
         exit 1
     fi
-
-    echo "Generating new key pair..." | tee -a "$LOG_FILE"
-    echo "Please enter a password for your secret key (leave blank for no password):"
-    soundness-cli generate-key --name my-key 2>&1 | tee -a "$LOG_FILE"
 
     echo "Exporting mnemonic phrase..." | tee -a "$LOG_FILE"
     soundness-cli export-key --name my-key 2>&1 | tee -a "$LOG_FILE"
